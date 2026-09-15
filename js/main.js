@@ -319,7 +319,7 @@ function openServiceModal(service) {
 }
 
 /* ==========================================================================
-   8. Contact & Consultation Form Validation & Toast Notification
+   8. Contact & Consultation Form Validation & Direct WhatsApp Submission
    ========================================================================== */
 function initContactForms() {
   const forms = document.querySelectorAll('.corporate-contact-form');
@@ -330,23 +330,31 @@ function initContactForms() {
 
       const nameInput = form.querySelector('input[name="name"]');
       const emailInput = form.querySelector('input[name="email"]');
+      const phoneInput = form.querySelector('input[name="phone"]');
+      const serviceInput = form.querySelector('select[name="service"]') || form.querySelector('input[name="service"]');
       const messageInput = form.querySelector('textarea[name="message"]');
 
-      if (nameInput && !nameInput.value.trim()) {
+      const name = nameInput ? nameInput.value.trim() : '';
+      const email = emailInput ? emailInput.value.trim() : '';
+      const phone = phoneInput ? phoneInput.value.trim() : '';
+      const service = serviceInput ? serviceInput.value.trim() : '';
+      const message = messageInput ? messageInput.value.trim() : '';
+
+      if (!name) {
         showToast('Required Field', 'Please provide your full name or company name.', 'error');
-        nameInput.focus();
+        if (nameInput) nameInput.focus();
         return;
       }
 
-      if (emailInput && (!emailInput.value.trim() || !emailInput.value.includes('@'))) {
+      if (!email || !email.includes('@')) {
         showToast('Invalid Email', 'Please enter a valid business email address.', 'error');
-        emailInput.focus();
+        if (emailInput) emailInput.focus();
         return;
       }
 
-      if (messageInput && !messageInput.value.trim()) {
+      if (!message) {
         showToast('Required Field', 'Please provide brief details about your inquiry.', 'error');
-        messageInput.focus();
+        if (messageInput) messageInput.focus();
         return;
       }
 
@@ -355,8 +363,27 @@ function initContactForms() {
       
       if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.innerHTML = `<span>Processing...</span>`;
+        submitBtn.innerHTML = `<span>Connecting to WhatsApp...</span>`;
       }
+
+      // Format WhatsApp Message with submitted fields
+      const waNumber = (typeof COMPANY_INFO !== 'undefined' && COMPANY_INFO.whatsappNumber) 
+        ? COMPANY_INFO.whatsappNumber 
+        : "971588828318";
+
+      let waMessage = `*LogicHub - F.Z.E Consultation Request*\n\n`;
+      waMessage += `*Name / Entity:* ${name}\n`;
+      waMessage += `*Business Email:* ${email}\n`;
+      if (phone) {
+        waMessage += `*Phone / Mobile:* ${phone}\n`;
+      }
+      if (service && service !== 'Choose a licensed activity' && service !== '') {
+        waMessage += `*Target Service:* ${service}\n`;
+      }
+      waMessage += `\n*Project Scope / Details:*\n${message}\n\n`;
+      waMessage += `_Submitted via LogicHub Portal_`;
+
+      const whatsappUrl = `https://api.whatsapp.com/send?phone=${waNumber}&text=${encodeURIComponent(waMessage)}`;
 
       setTimeout(() => {
         if (submitBtn) {
@@ -372,11 +399,14 @@ function initContactForms() {
         }
 
         showToast(
-          'Inquiry Received',
-          'Thank you. Your consultation inquiry for LogicHub - F.Z.E has been logged successfully.',
+          'Inquiry Prepared',
+          'Opening WhatsApp chat with LogicHub operations desk (+971 58 882 8318)...',
           'success'
         );
-      }, 900);
+
+        // Open WhatsApp in new tab or direct window
+        window.open(whatsappUrl, '_blank');
+      }, 500);
     });
   });
 }
