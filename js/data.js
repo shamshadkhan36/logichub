@@ -14,7 +14,10 @@ const COMPANY_INFO = {
   emirate: "Ajman",
   jurisdiction: "Ajman Free Zone Authority (AFZA)",
   email: "info@logichub.ae",
-  whatsappNumber: "971500000000",
+  whatsappNumber: "971588828318",
+  whatsappDisplay: "+971 58 882 8318",
+  phone: "+971 58 882 8318",
+  whatsappUrl: "https://wa.me/971588828318?text=Hello%20LogicHub%2C%20I%20would%20like%20to%20inquire%20about%20your%20services.",
   coordinates: {
     lat: 25.4111,
     lng: 55.4350,

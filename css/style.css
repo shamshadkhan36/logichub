@@ -310,8 +310,12 @@ img {
 }
 
 .brand-logo svg, .brand-logo img {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: block;
 }
 
 .brand-text {
@@ -1561,3 +1565,55 @@ img {
 .breadcrumb span {
   color: var(--gold-primary);
 }
+
+/* ==========================================================================
+   Floating WhatsApp Direct Widget
+   ========================================================================== */
+.whatsapp-float {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 990;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: #25D366;
+  color: #FFFFFF !important;
+  padding: 0.75rem 1.25rem;
+  border-radius: 9999px;
+  box-shadow: 0 10px 25px rgba(37, 211, 102, 0.35), 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.whatsapp-float svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+.whatsapp-float:hover {
+  background-color: #20BA5A;
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 14px 30px rgba(37, 211, 102, 0.45), 0 6px 16px rgba(0, 0, 0, 0.12);
+  color: #FFFFFF !important;
+}
+
+@media (max-width: 640px) {
+  .whatsapp-float {
+    bottom: 1.25rem;
+    right: 1.25rem;
+    padding: 0.75rem;
+    border-radius: 50%;
+    width: 3.25rem;
+    height: 3.25rem;
+    justify-content: center;
+  }
+  .whatsapp-float span {
+    display: none;
+  }
+}
+
